@@ -4,5 +4,5 @@
         io.github.kotoba-lang/langchain
         {:local/root "../../kotoba-lang/langchain"}
         com.etzhayyim/social-publication
-        {:local/root "../com-etzhayyim-social-publication"}}
+        {:local/root "../../kotoba-lang/social-publication"}}
  :aliases {:test {:extra-paths ["test"]}}}
