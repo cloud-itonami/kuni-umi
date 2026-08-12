@@ -5,4 +5,12 @@
         {:local/root "../../kotoba-lang/langchain"}
         com.etzhayyim/social-publication
         {:local/root "../../kotoba-lang/social-publication"}}
- :aliases {:test {:extra-paths ["test"]}}}
+ :aliases
+ {:test
+  {:extra-paths ["test"]
+   ;; babashka BUNDLES cheshire, so bb.edn never had to declare it and
+   ;; repository_contract_test / robotics/kami_parity_test just required it.
+   ;; Off bb it is an ordinary Maven dependency, and without this line the
+   ;; suite dies on the classpath rather than on an assertion. 5.13.0 is the
+   ;; version the rest of this workspace pins. (ADR-2608133200)
+   :extra-deps {cheshire/cheshire {:mvn/version "5.13.0"}}}}}
