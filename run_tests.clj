@@ -1,4 +1,8 @@
-#!/usr/bin/env bb
+;; Standalone test-suite entrypoint. Run it through the task registry:
+;;   nbb scripts/run-task.cljs test
+;; which invokes `clojure -M:test run_tests.clj`. It carried a
+;; `#!/usr/bin/env bb` shebang until 2026-08-13; bb was retired by
+;; ADR-2607173000 and is not installed on the murakumo fleet nodes.
 (require '[clojure.test :as t])
 
 (def suites

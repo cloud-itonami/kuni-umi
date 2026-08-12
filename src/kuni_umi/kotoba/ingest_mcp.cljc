@@ -1,4 +1,3 @@
-#!/usr/bin/env bb
 ;; kuni-umi 国生み — ingest seed.edn into a live kotoba node (cljc port of ingest_mcp.py).
 ;; ADR-2605201400.
 (ns kuni-umi.kotoba.ingest-mcp
@@ -12,12 +11,31 @@
 
 #?(:clj
    (def seed-path
-     (str (-> (io/file *file*)
-              .getParentFile
-              .getParentFile
-              .getParentFile
-              .getParentFile)
-          "/kotoba/seed.edn")))
+     ;; Locate <repo>/kotoba/seed.edn without assuming *file* is ABSOLUTE.
+     ;;
+     ;; It was, under babashka: bb sets *file* to the absolute source path, so
+     ;; four .getParentFile hops (kotoba -> kuni_umi -> src -> <repo>) landed on
+     ;; the repo root. Under JVM Clojure *file* is the CLASSPATH-RELATIVE path
+     ;; "kuni_umi/kotoba/ingest_mcp.cljc" -- the src segment is not in it -- so
+     ;; the third hop returned nil and the fourth threw IllegalArgumentException
+     ;; ("null object for public java.io.File java.io.File.getParentFile") at
+     ;; NAMESPACE LOAD time. That took the whole test suite with it, because
+     ;; ingest_mcp_test requires this namespace: the failure was not in a test,
+     ;; it was in getting far enough to have tests. (ADR-2608133200)
+     ;;
+     ;; Walk up from the absolutised file and take the first ancestor that
+     ;; actually CONTAINS kotoba/seed.edn, rather than counting hops -- a count
+     ;; encodes both the directory layout and the host's *file* convention, and
+     ;; only one of those is this repo's to control.
+     (let [dirs (->> (.getParentFile (.getAbsoluteFile (io/file *file*)))
+                     (iterate #(some-> ^java.io.File % .getParentFile))
+                     (take-while some?)
+                     (take 10))]
+       (or (some (fn [^java.io.File d]
+                   (let [f (io/file d "kotoba" "seed.edn")]
+                     (when (.isFile f) (.getPath f))))
+                 dirs)
+           (.getPath (io/file "kotoba" "seed.edn"))))))
 
 (defn strip-comments [^String s]
   (let [sb (StringBuilder.)]
@@ -74,5 +92,9 @@
            dry? (boolean (some #(= "--dry-run" %) argv))]
        (run {:url url :graph gr :dry-run? dry?}))))
 
-#?(:clj
-   (when (= *file* (System/getProperty "babashka.file")) (-main)))
+;; The babashka "am I the script being run" self-exec hook lived here:
+;;   (when (= *file* (System/getProperty "babashka.file")) (-main))
+;; bb was retired as this workspace's script host by ADR-2607173000, so that
+;; property is always nil and the form was dead. The entrypoint is now the
+;; registered task -- `nbb scripts/run-task.cljs seed-dry-run` -- which reaches
+;; -main through `clojure -M -m kuni-umi.kotoba.ingest-mcp --dry-run`.
