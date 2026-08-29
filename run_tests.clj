@@ -12,6 +12,7 @@
     kuni-umi.cells.decommission.test-cell
     kuni-umi.cells.deployment-planning.test-cell
     kuni-umi.cells.site-survey.test-cell
+    kuni-umi.cells.site-survey.jurisdiction-kotoba-parity-test
     kuni-umi.cells.social-post.state-machine-test
     kuni-umi.kotoba.ingest-mcp-test
     kuni-umi.repository-contract-test

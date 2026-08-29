@@ -13,4 +13,17 @@
    ;; Off bb it is an ordinary Maven dependency, and without this line the
    ;; suite dies on the classpath rather than on an assertion. 5.13.0 is the
    ;; version the rest of this workspace pins. (ADR-2608133200)
-   :extra-deps {cheshire/cheshire {:mvn/version "5.13.0"}}}}}
+   :extra-deps {cheshire/cheshire {:mvn/version "5.13.0"}
+                ;; TEST-ONLY (ADR-2608261100). The jurisdiction parity test
+                ;; compiles kotoba/site_survey/jurisdiction.kotoba in-process
+                ;; and runs it against kuni-umi.cells.site-survey.cell.
+                ;; Nothing in :paths reaches either of these; the guest is not
+                ;; in the require graph.
+                ;;
+                ;; Pins are the west pair as of this commit; advance together.
+                io.github.kotoba-lang/amu
+                {:git/url "https://github.com/kotoba-lang/amu.git"
+                 :git/sha "5a2d188e32c709dabfbd4aad12b6e02c6d6c8d64"}
+                io.github.kotoba-lang/kotoba-kir
+                {:git/url "https://github.com/kotoba-lang/kotoba-kir.git"
+                 :git/sha "099c627609ad506babf05f2d5e9a73b95c1b026b"}}}}}

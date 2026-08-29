@@ -167,6 +167,56 @@
   `ComplianceFloor` analog for this actor."
   #{"civilian" "community" "commons"})
 
+(def advisor-confidence-floor
+  "Confidence below which the governor refuses regardless of what the advisor
+  concluded. A floor, not a threshold the advisor can argue past."
+  0.5)
+
+(defn advisor-verdict
+  "Reduce an advisor proposal to the closed vocabulary the decision actually
+  uses: `:absent` (no advisor injected), `:reject` (the advisor said
+  `:accepted false` — note `false?`, so a proposal that simply omits the key
+  is NOT a rejection), `:accept` otherwise. Product semantics; the LLM
+  transport that produced the proposal is host mechanism."
+  [advisor-proposal]
+  (cond
+    (nil? advisor-proposal)                  :absent
+    (false? (:accepted advisor-proposal))    :reject
+    :else                                    :accept))
+
+(defn jurisdiction-rejection-code
+  "The governor's decision as a closed reason code — `\"\"` means accepted.
+  This is the portable half: the same function is written in Kotoba at
+  `kotoba/site_survey/jurisdiction.kotoba` and pinned against this one by
+  `kuni-umi.cells.site-survey.jurisdiction-kotoba-parity-test`. Prose lives
+  in `jurisdiction-governor` below, because the wording is a report to a
+  human, not a decision.
+
+  Absence is spelled `str/blank?` rather than `nil?`: a blank jurisdictionDid
+  is missing in every sense the constitution cares about, and the guest gets
+  `\"\"` for an unset field either way (there is no nil in a Kotoba string)."
+  [state advisor-proposal]
+  (let [intended-use (get state :intendedUse)
+        verdict      (advisor-verdict advisor-proposal)
+        confidence   (get advisor-proposal :confidence 1.0)]
+    (cond
+      (not (contains? constitutional-intended-uses intended-use))
+      "intended-use-not-civilian"
+
+      (str/blank? (get state :jurisdictionDid))
+      "jurisdiction-did-missing"
+
+      (str/blank? (get state :localLawAttestationCid))
+      "local-law-attestation-missing"
+
+      (= verdict :reject)
+      "advisor-rejected"
+
+      (and (not= verdict :absent) (< confidence advisor-confidence-floor))
+      "advisor-confidence-below-floor"
+
+      :else "")))
+
 (defn jurisdiction-governor
   "Independently re-derives :accepted from the RAW state — never trusts
   `advisor-proposal`'s self-reported :accepted (same invariant as
@@ -176,32 +226,35 @@
   or confidence level; (2) required-field presence (jurisdictionDid,
   localLawAttestationCid) — soft-scaffold checks pending the real
   ADR-2605201400 §5 Rego policy; (3) the advisor's own judgment + confidence
-  floor. `advisor-proposal` may be nil (no advisor injected)."
+  floor. `advisor-proposal` may be nil (no advisor injected).
+
+  The decision is `jurisdiction-rejection-code`; this function only dresses
+  the code in prose for the rejectionReason field."
   [state advisor-proposal]
   (let [intended-use (get state :intendedUse)
         confidence   (get advisor-proposal :confidence 1.0)]
-    (cond
-      (not (contains? constitutional-intended-uses intended-use))
+    (case (jurisdiction-rejection-code state advisor-proposal)
+      "intended-use-not-civilian"
       {:accepted false
        :rejectionReason (str "intendedUse " (pr-str intended-use)
                              " is not in " constitutional-intended-uses
                              " (constitutional boundary, this actor's CLAUDE.md)")}
 
-      (nil? (get state :jurisdictionDid))
+      "jurisdiction-did-missing"
       {:accepted false :rejectionReason "jurisdictionDid missing"}
 
-      (nil? (get state :localLawAttestationCid))
+      "local-law-attestation-missing"
       {:accepted false :rejectionReason "localLawAttestationCid missing"}
 
-      (and advisor-proposal (false? (:accepted advisor-proposal)))
+      "advisor-rejected"
       {:accepted false
        :rejectionReason (or (:rationale advisor-proposal) "advisor flagged ineligible")}
 
-      (and advisor-proposal (< confidence 0.5))
+      "advisor-confidence-below-floor"
       {:accepted false
-       :rejectionReason (str "advisor confidence " confidence " below floor 0.5")}
+       :rejectionReason (str "advisor confidence " confidence " below floor "
+                             advisor-confidence-floor)}
 
-      :else
       {:accepted true :rejectionReason nil})))
 
 (defn mock-advise
@@ -263,6 +316,27 @@
   [state]
   (if (:accepted state) "witness_attest" "emit_survey"))
 
+(def graph-edges
+  "The static edges of the Phase-1 graph (ADR-2605202200 §1). The one
+  conditional edge — jurisdiction_eligibility → {witness_attest|emit_survey}
+  — is `router`, not an entry here."
+  [["START" "allocate_scout_fleet"]
+   ["allocate_scout_fleet" "collect_sensor_blob"]
+   ["collect_sensor_blob" "jurisdiction_eligibility"]
+   ["witness_attest" "emit_survey"]
+   ["emit_survey" "END"]])
+
+(defn next-node
+  "Successor of `node` given the accept decision — the graph traversal as a
+  function rather than as a wiring table the runner has to interpret. Derived
+  from `graph-edges` + `router` so there is exactly one truth here; the Kotoba
+  twin at `kotoba/site_survey/jurisdiction.kotoba` writes the same relation out
+  and is pinned to this one by the parity test. Unknown node → \"END\"."
+  [node accepted]
+  (if (= node "jurisdiction_eligibility")
+    (router {:accepted accepted})
+    (or (some (fn [[from to]] (when (= from node) to)) graph-edges) "END")))
+
 ;; ── build_graph (LangGraph wiring → plain data, no langgraph dep) ──
 
 (defn build-graph
@@ -278,11 +352,7 @@
              "jurisdiction_eligibility" (fn [s] (jurisdiction-eligibility s deps))
              "witness_attest"           (fn [s] (witness-attest s deps))
              "emit_survey"              (fn [s] (emit-survey s deps))}
-   :edges   [["START" "allocate_scout_fleet"]
-             ["allocate_scout_fleet" "collect_sensor_blob"]
-             ["collect_sensor_blob" "jurisdiction_eligibility"]
-             ["witness_attest" "emit_survey"]
-             ["emit_survey" "END"]]
+   :edges   graph-edges
    ;; conditional edge: jurisdiction_eligibility → (router) → node
    :conditional-edges {"jurisdiction_eligibility" router}
    :checkpointer (:checkpointer deps)})

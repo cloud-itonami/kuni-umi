@@ -1,0 +1,104 @@
+;; SiteSurveyCell Phase 1 — the jurisdiction gate and the graph it sits in,
+;; as ordinary Kotoba values (ADR-2608261100, ADR-2607279200 decision 5).
+;;
+;; This is the guest half of one vertical slice. The split is guest/host, not
+;; judgement/remainder:
+;;
+;;   guest (here)   which sites the constitution admits, what the governor is
+;;                  allowed to conclude from an advisor's proposal, and which
+;;                  node of the Phase-1 graph runs next.
+;;   host (.cljc)   the Giemon scout fleet, LIDAR/RGB-D capture, the IPFS pin,
+;;                  the Ed25519 witness signatures, the MST write, and the LLM
+;;                  transport that produced the advisor proposal. Every one of
+;;                  those is ambient authority: a socket, a key, or a robot.
+;;
+;; `src/kuni_umi/cells/site_survey/cell.cljc` stays the oracle. It does NOT
+;; require this file — nothing in the require graph reaches here, so only
+;; `test/kuni_umi/cells/site_survey/jurisdiction_kotoba_parity_test.clj`
+;; notices the two drifting apart.
+;;
+;; Two lowerings are visible and neither is hidden:
+;;
+;;   * An unset field arrives as "" — a Kotoba string has no nil. The oracle
+;;     spells absence `str/blank?` for the same reason, so a blank
+;;     jurisdictionDid is missing on both sides rather than only on this one.
+;;   * The rejection is a code, not a sentence. The prose in the cell's
+;;     rejectionReason is a report to a human and belongs with the host that
+;;     renders it; `#{"civilian" "community" "commons"}` printed into a message
+;;     is a Clojure artefact, not a decision.
+;;
+;; `and`/`or` are two-argument here because that is the admitted arity; nesting
+;; is the lowering, not a reason to flatten the rules into arithmetic.
+;;
+;; Compile:
+;;   kotoba -M compile <abs>/kotoba/site_survey/jurisdiction.kotoba \
+;;     --target wasm32-browser --output jurisdiction.wasm
+;;   kotoba -M compile <abs>/kotoba/site_survey/jurisdiction.kotoba \
+;;     --target js-browser --output jurisdiction.mjs
+
+(ns kuni-umi.site-survey.jurisdiction
+  (:export [civilian-use? rejection-code accepted? route next-node
+            advisor-confidence-floor]))
+
+;; ── The constitutional floor (this actor's CLAUDE.md intendedUse row) ──
+;; Civilian / community / commons only. No advisor and no confidence level
+;; reaches past this; it is checked first for exactly that reason.
+
+(defn civilian-use? [use :string] :bool
+  (or (string=? use "civilian")
+      (or (string=? use "community")
+          (string=? use "commons"))))
+
+(defn advisor-confidence-floor [] :f64 0.5)
+
+(defn- confidence-below-floor? [confidence :f64] :bool
+  (f64-lt confidence (advisor-confidence-floor)))
+
+(defn- missing? [field :string] :bool
+  (string=? field ""))
+
+;; ── The governor ──────────────────────────────────────────────────
+;; `verdict` is the advisor proposal reduced to a closed vocabulary:
+;;   :absent  no advisor was injected
+;;   :reject  the advisor said accepted=false
+;;   :accept  anything else (a proposal that omits the key is not a rejection)
+;; The governor re-derives the decision from the raw state and can refuse in
+;; either direction; a permissive advisor never buys past `civilian-use?`.
+;;
+;; Returns "" when the site is accepted, otherwise the reason code.
+
+(defn rejection-code [use :string jurisdiction-did :string
+                      local-law-cid :string verdict :keyword
+                      confidence :f64] :string
+  (cond
+    (not (civilian-use? use))     "intended-use-not-civilian"
+    (missing? jurisdiction-did)   "jurisdiction-did-missing"
+    (missing? local-law-cid)      "local-law-attestation-missing"
+    (= verdict :reject)           "advisor-rejected"
+    (and (not (= verdict :absent))
+         (confidence-below-floor? confidence))
+    "advisor-confidence-below-floor"
+    :else ""))
+
+(defn accepted? [use :string jurisdiction-did :string
+                 local-law-cid :string verdict :keyword
+                 confidence :f64] :bool
+  (string=? (rejection-code use jurisdiction-did local-law-cid verdict confidence) ""))
+
+;; ── The graph ─────────────────────────────────────────────────────
+;; START → allocate_scout_fleet → collect_sensor_blob →
+;; jurisdiction_eligibility → {witness_attest | emit_survey} → END.
+;; The host runs the node; the guest says which node that is.
+
+(defn route [accepted :bool] :string
+  (if accepted "witness_attest" "emit_survey"))
+
+(defn next-node [node :string accepted :bool] :string
+  (cond
+    (string=? node "START")                    "allocate_scout_fleet"
+    (string=? node "allocate_scout_fleet")     "collect_sensor_blob"
+    (string=? node "collect_sensor_blob")      "jurisdiction_eligibility"
+    (string=? node "jurisdiction_eligibility") (route accepted)
+    (string=? node "witness_attest")           "emit_survey"
+    (string=? node "emit_survey")              "END"
+    :else                                      "END"))
