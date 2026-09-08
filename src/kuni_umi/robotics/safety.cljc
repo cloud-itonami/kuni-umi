@@ -6,7 +6,7 @@
   `:safety/error true`) before any motion is planned, never returns a value the
   caller could ignore. The software embodiment of the constitutional invariants —
   NOT a substitute for the certified IEC 61508/61511 parallel safety PLC."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def MIN-WITNESS-SIGS
   "Constitutional witness quorum (G8, ADR-2605201400)."

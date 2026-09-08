@@ -21,7 +21,7 @@
   See site-survey cell.cljc for the cell_runtime SHIM conventions. The pure nodes
   are `verify-signatures` + `compare-blobs` + the two routers; substrate-gated
   nodes raise `ex-info` (NotImplementedError parity)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── Literal enums (Python value identities preserved) ─────────────
 

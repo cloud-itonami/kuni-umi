@@ -22,7 +22,7 @@
     - LangGraph `build_graph` wiring → plain data (node list + node→fn map + edges).
     - hardware/SDK/contract-gated nodes raise via `ex-info` (R0 NotImplementedError
       parity); the only pure node is `proportionality-check`."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── Literal enums (Python value identities preserved) ─────────────
 

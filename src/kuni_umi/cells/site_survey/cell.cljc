@@ -41,7 +41,7 @@
       conditional router); no langgraph dependency at this layer.
     - The hardware/SDK-gated nodes raise via `ex-info` (R0 NotImplementedError
       parity); the only pure node is `jurisdiction-eligibility`."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── Literal enums (Python value identities preserved) ─────────────
 

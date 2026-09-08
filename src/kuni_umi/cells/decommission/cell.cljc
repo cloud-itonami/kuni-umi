@@ -16,7 +16,7 @@
   See site-survey cell.cljc for the cell_runtime SHIM + plain-data StateGraph
   conventions. Every node is substrate-gated → raises `ex-info` (R0
   NotImplementedError parity); the graph is linear (no pure node)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── Literal enums (Python value identities preserved) ─────────────
 

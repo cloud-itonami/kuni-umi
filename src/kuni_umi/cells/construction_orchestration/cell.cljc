@@ -21,7 +21,7 @@
   See site-survey cell.cljc for the cell_runtime SHIM + plain-data StateGraph
   conventions. Substrate-gated nodes raise `ex-info` (NotImplementedError parity);
   the pure logic is `witness-router` + the `build-graph` cadence check."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── Literal enums (Python value identities preserved) ─────────────
 
