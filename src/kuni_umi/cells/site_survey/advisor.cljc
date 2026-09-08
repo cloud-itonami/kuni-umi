@@ -18,7 +18,7 @@
   constitutional intendedUse floor by any LLM output, however confident."
   (:require #?(:clj  [clojure.edn :as edn]
                :cljs [cljs.reader :as edn])
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [langchain.model :as model]))
 
 ;; ───────────────────────── Murakumo-fleet host allowlist ─────────────────────────

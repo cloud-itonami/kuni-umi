@@ -18,7 +18,7 @@
   Env:   KUNI_UMI_OLLAMA_URL (default http://127.0.0.1:11434)
          KUNI_UMI_OLLAMA_MODEL (default gemma-4-E4B qat)"
   (:require [clojure.data.json :as json]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [kuni-umi.cells.site-survey.advisor]
             [kuni-umi.cells.site-survey.cell]
             [langchain.model :as model])
@@ -38,7 +38,7 @@
   [{:keys [url method headers body]}]
   (let [b (HttpRequest/newBuilder (URI/create url))]
     (doseq [[k v] headers] (.header b k v))
-    (let [req  (-> b (.method (str/upper-case (name (or method :post)))
+    (let [req  (-> b (.method (str/upper (name (or method :post)))
                              (if body
                                (HttpRequest$BodyPublishers/ofString body)
                                (HttpRequest$BodyPublishers/noBody)))
