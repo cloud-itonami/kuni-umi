@@ -17,7 +17,7 @@
   Usage: clojure -M -m kuni-umi.cells.site-survey.deploy
   Env:   KUNI_UMI_OLLAMA_URL (default http://127.0.0.1:11434)
          KUNI_UMI_OLLAMA_MODEL (default gemma-4-E4B qat)"
-  (:require [clojure.data.json :as json]
+  (:require [json.data-json :as json]
             [kotoba.lang.text :as str]
             [kuni-umi.cells.site-survey.advisor]
             [kuni-umi.cells.site-survey.cell]
