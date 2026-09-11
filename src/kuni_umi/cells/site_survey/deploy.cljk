@@ -14,7 +14,7 @@
   The repository-native src layout resolves the actor namespaces directly;
   no etzhayyim/root classpath or load-file shim is required.
 
-  Usage: clojure -M -m kuni-umi.cells.site-survey.deploy
+  Usage: kbb -M -m kuni-umi.cells.site-survey.deploy
   Env:   KUNI_UMI_OLLAMA_URL (default http://127.0.0.1:11434)
          KUNI_UMI_OLLAMA_MODEL (default gemma-4-E4B qat)"
   (:require [json.data-json :as json]

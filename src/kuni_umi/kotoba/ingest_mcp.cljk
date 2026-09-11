@@ -94,7 +94,7 @@
 
 ;; The babashka "am I the script being run" self-exec hook lived here:
 ;;   (when (= *file* (System/getProperty "babashka.file")) (-main))
-;; bb was retired as this workspace's script host by ADR-2607173000, so that
+;; kbb -M:was retired as this workspace's script host by ADR-2607173000, so that
 ;; property is always nil and the form was dead. The entrypoint is now the
-;; registered task -- `nbb scripts/run-task.cljk seed-dry-run` -- which reaches
-;; -main through `clojure -M -m kuni-umi.kotoba.ingest-mcp --dry-run`.
+;; registered task -- `kbb --backend sci scripts/run-task.cljk seed-dry-run` -- which reaches
+;; -main through `kbb -M -m kuni-umi.kotoba.ingest-mcp --dry-run`.
