@@ -4,7 +4,7 @@
  :cell/glyph "📐"
  :cell/kind :langgraph
  :cell/runtime :wasm
- :cell/entry "src/kuni_umi/cells/deployment_planning/cell.cljc"
+ :cell/entry "src/kuni_umi/cells/deployment_planning/cell.cljk"
  :cell/handler "handle_deployment_planning"
  :cell/doc "Intake :siteAttestation → Giemon fleet composition planning (Otete/Mimi/Watari/Awa/Hitogata/Quad) + motion sequence simulation (Murakumo LLM rewrite) + safety margin attestation (≥2 independent robot witness signatures mandatory before real-world binding, G8). Output :deploymentIntent (state :planned, unsigned). Stops at intent — member signature required (G14/G15)."
  :cell/state-graph

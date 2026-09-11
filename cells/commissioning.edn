@@ -4,7 +4,7 @@
  :cell/glyph "✅"
  :cell/kind :langgraph
  :cell/runtime :wasm
- :cell/entry "src/kuni_umi/cells/commissioning/cell.cljc"
+ :cell/entry "src/kuni_umi/cells/commissioning/cell.cljk"
  :cell/handler "handle_commissioning"
  :cell/doc "Intake :constructionRecord (ready-qc) → run commissioning checklist (safety PLCs + motion bounds + sensor calibration simulation, Murakumo rewrite) → generate :commissioningRecord with ≥2 robot-DID witness signatures + operator attestation (G8/G13/G15) → transition :commissioning/state from :in-progress → :passed | :failed. Stops at :passed intent; no live operation until member consent + Council Lv6+ gate (R1+)."
  :cell/state-graph

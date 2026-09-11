@@ -4,7 +4,7 @@
  :cell/glyph "🗑️"
  :cell/kind :langgraph
  :cell/runtime :wasm
- :cell/entry "src/kuni_umi/cells/decommission/cell.cljc"
+ :cell/entry "src/kuni_umi/cells/decommission/cell.cljk"
  :cell/handler "handle_decommission"
  :cell/doc "End-of-mission decommission: intake :auditRecord (operational-complete) → plan robot retrieval + equipment salvage (circular inventory) → generate :decommissionRecord with ≥2 robot-DID witness signatures (constitutional, G8) + final site restoration attestation (soil/water remediation if applicable) → mark site :available-for-redeployment. Circular: all Giemon hardware returnable to kuni-umi fleet pool via closed-loop logistics (Quad robot). All witness records encrypted & kotoba-native (G9/G17)."
  :cell/state-graph

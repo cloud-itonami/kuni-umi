@@ -12,9 +12,9 @@
 ;;                  transport that produced the advisor proposal. Every one of
 ;;                  those is ambient authority: a socket, a key, or a robot.
 ;;
-;; `src/kuni_umi/cells/site_survey/cell.cljc` stays the oracle. It does NOT
+;; `src/kuni_umi/cells/site_survey/cell.cljk` stays the oracle. It does NOT
 ;; require this file — nothing in the require graph reaches here, so only
-;; `test/kuni_umi/cells/site_survey/jurisdiction_kotoba_parity_test.clj`
+;; `test/kuni_umi/cells/site_survey/jurisdiction_kotoba_parity_test.cljk`
 ;; notices the two drifting apart.
 ;;
 ;; Two lowerings are visible and neither is hidden:
