@@ -9,7 +9,7 @@ via `kami_articulated::parse_urdf`) for
    (revolute +z, links along +x ⇒ planar x–y, CCW positive), and
 2. the real **giemon_arm6** 6-DOF fixture (the ADR-2606091800 swap target).
 
-`../../test/kuni_umi/robotics/kami_parity_test.clj` consumes the committed golden trace, so the parity
+`../../test/kuni_umi/robotics/kami_parity_test.cljk` consumes the committed golden trace, so the parity
 suite runs **without** Rust or the submodule. This crate is only needed to
 regenerate the trace after a kami-engine bump:
 

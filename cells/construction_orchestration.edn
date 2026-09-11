@@ -4,7 +4,7 @@
  :cell/glyph "🏗️"
  :cell/kind :langgraph
  :cell/runtime :wasm
- :cell/entry "src/kuni_umi/cells/construction_orchestration/cell.cljc"
+ :cell/entry "src/kuni_umi/cells/construction_orchestration/cell.cljk"
  :cell/handler "handle_construction_orchestration"
  :cell/doc "Intake :deploymentIntent (member-signed, intent → pending-dispatch) → coordinate Giemon robot motion tasks via kotoba event log (no direct motion in R0; G1 consent gate) → simulate progress updates (Murakumo LLM task reasoning) → build :constructionRecord with ≥2 robot-DID witness signatures (mandatory, constitutional, G8). Output transitions :constructionRecord/state from :in-progress → :ready-qc. No actual robot dispatch until R1+."
  :cell/state-graph

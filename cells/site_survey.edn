@@ -5,7 +5,7 @@
  :cell/glyph "🔍"
  :cell/kind :langgraph
  :cell/runtime :wasm
- :cell/entry "src/kuni_umi/cells/site_survey/cell.cljc"
+ :cell/entry "src/kuni_umi/cells/site_survey/cell.cljk"
  :cell/handler "handle_site_survey"
  :cell/doc "Member-initiated site survey → geolocation capture (satellite + drone) → land-registry anchor verification (kuni-umi LandRegistry or OceanStewardship) → zoning check → environmental baseline attestation (soil/air/water) → output :siteAttestation (G10 gated). No field robots until R1 + Council Lv6+ 3-sig clearance per ADR-2605201400 §7."
  :cell/state-graph

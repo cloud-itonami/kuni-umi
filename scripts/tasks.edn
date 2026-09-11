@@ -1,4 +1,4 @@
-;; Task registry for `nbb scripts/run-task.cljs <task> [args…]` (ADR-2607173000).
+;; Task registry for `nbb scripts/run-task.cljk <task> [args…]` (ADR-2607173000).
 ;;
 ;; Until 2026-08-13 this file was NOT a conversion but a facade:
 ;;   {:test {:cmd ["bb" "test"]} :seed-dry-run {:cmd ["bb" "seed-dry-run"]}}
@@ -8,8 +8,8 @@
 ;; fleet node — none of which has bb — every task here failed to start.
 ;; bb.edn is now gone and these are the real invocations (ADR-2608133200).
 {:test
- {:cmd ["clojure" "-M:test" "run_tests.clj"]
-  :doc "Run the 12 standalone kuni-umi suites listed in run_tests.clj (cells, kotoba ingest, repository contract, robotics). Exits 1 when any suite fails, so it is usable as a gate."}
+ {:cmd ["clojure" "-M:test" "run_tests.cljk"]
+  :doc "Run the 12 standalone kuni-umi suites listed in run_tests.cljk (cells, kotoba ingest, repository contract, robotics). Exits 1 when any suite fails, so it is usable as a gate."}
 
  :seed-dry-run
  {:cmd ["clojure" "-M" "-m" "kuni-umi.kotoba.ingest-mcp" "--dry-run"]
