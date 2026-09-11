@@ -20,7 +20,7 @@ git submodule update --init 40-engine/kami-engine
 cd robotics
 cargo run --manifest-path kami-bridge/Cargo.toml --release \
   > golden/kami_fk_ik_trace.json
-cd .. && bb test
+cd .. && kbb -M:test
 ```
 
 Deterministic: fixed sample grids, no RNG, no clock. Known, recorded asymmetry:
