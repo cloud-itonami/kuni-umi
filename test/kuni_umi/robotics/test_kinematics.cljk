@@ -2,7 +2,7 @@
   "kuni-umi 国産み planar-arm kinematics — cljc port conformance + the FK∘IK
   round-trip invariant. Oracle values are committed fixtures preserved from the
   port wave."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kuni-umi.robotics.kinematics :as k]))
 
 (def ^:private arm (k/planar-arm [1.0 0.8]))

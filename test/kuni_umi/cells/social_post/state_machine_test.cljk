@@ -1,5 +1,5 @@
 (ns kuni-umi.cells.social-post.state-machine-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.social-post.state-machine :as state-machine]
             [kuni-umi.methods.social :as social]))
 

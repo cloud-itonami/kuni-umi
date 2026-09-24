@@ -2,7 +2,7 @@
   "kuni-umi 国産み AuditWitnessCell smoke + invariant tests. Pins the pure
   verify-signatures / compare-blobs logic, the N≥2 invariant, both routers, the
   R0 substrate gates, and the event shims."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.audit-witness.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities

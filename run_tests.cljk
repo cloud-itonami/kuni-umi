@@ -3,7 +3,7 @@
 ;; which invokes `kbb -M:test run_tests.cljk`. It carried a
 ;; `#!/usr/bin/env bb` shebang until 2026-08-13; kbb -M:was retired by
 ;; ADR-2607173000 and is not installed on the murakumo fleet nodes.
-(require '[clojure.test :as t])
+(require '[kotoba.test :as t])
 
 (def suites
   '[kuni-umi.cells.audit-witness.test-cell

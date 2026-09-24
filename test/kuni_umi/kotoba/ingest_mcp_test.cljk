@@ -1,5 +1,5 @@
 (ns kuni-umi.kotoba.ingest-mcp-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.kotoba.ingest-mcp :as ingest]))
 
 (deftest canonical-seed-is-one-edn-value
