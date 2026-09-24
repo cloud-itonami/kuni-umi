@@ -1,7 +1,7 @@
 (ns kuni-umi.repository-contract-test
   (:require [kotoba.lang.edn :as edn]
             [cheshire.core :as json]
-            [clojure.java.io :as io]
+            [kotoba.io :as io]
             [kotoba.test :refer [deftest is testing]]))
 
 (def contract (edn/read-string (slurp "repository-contracts.edn")))
@@ -13,17 +13,17 @@
                 "wire/bpmn/kuni-umi-deployment-workflow.bpmn"
                 "wire/robotics/golden/device_loop_trace.json"
                 "wire/robotics/golden/kami_fk_ik_trace.json"]]
-    (is (.isFile (io/file path)) path))
+    (is (io/file? (io/file path)) path))
   (doseq [path (:forbidden-root-paths contract)]
-    (is (not (.exists (io/file path))) path)))
+    (is (not (io/exists? (io/file path))) path)))
 
 (deftest central-action-lexicons-are-owned-here
   (let [names ["commissionDeployment" "defineDeploymentSite"
                "proposeDeploymentPlan" "recordConstructionProgress"
                "recordPhysicalAuditEvent" "submitSiteSurvey"]]
     (doseq [name names]
-      (is (.isFile (io/file "lex/actions" (str name ".edn"))))
-      (is (.isFile (io/file "wire/lexicons/kuniUmi" (str name ".json")))))))
+      (is (io/file? (io/file "lex/actions" (str name ".edn"))))
+      (is (io/file? (io/file "wire/lexicons/kuniUmi" (str name ".json")))))))
 
 (deftest legacy-apps-namespace-is-wire-only
   (let [names ["commissionDeployment" "defineDeploymentSite"
@@ -35,9 +35,9 @@
     (doseq [name names]
       (let [path (io/file (:path legacy) (str name ".json"))
             document (json/parse-string (slurp path))]
-        (is (.isFile path))
+        (is (io/file? path))
         (is (= (str (:namespace legacy) "." name) (get document "id")))
-        (is (not (.exists (io/file "lex/apps-etzhayyim-kuniUmi"
+        (is (not (io/exists? (io/file "lex/apps-etzhayyim-kuniUmi"
                                    (str name ".edn")))))))))
 
 (deftest exact-flat-west-dependencies
