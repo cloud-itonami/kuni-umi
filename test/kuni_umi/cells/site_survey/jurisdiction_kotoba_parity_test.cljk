@@ -23,7 +23,7 @@
 ;; values come from the oracle rather than from literals in the guest.
 
 (ns kuni-umi.cells.site-survey.jurisdiction-kotoba-parity-test
-  (:require [clojure.java.io :as io]
+  (:require [kotoba.io :as io]
             [clojure.java.shell :as shell]
             [kotoba.lang.text :as str]
             [kotoba.test :refer [deftest is testing]]
@@ -35,7 +35,7 @@
   (io/file (System/getProperty "user.dir") "kotoba" "site_survey" "jurisdiction.kotoba"))
 
 (defn- source-available? []
-  (let [present? (.exists kotoba-file)]
+  (let [present? (io/exists? kotoba-file)]
     (is present? (str "kotoba object not found at " kotoba-file))
     present?))
 
@@ -205,16 +205,16 @@
     (if (kotoba-compiler-cli?)
       (let [dir (io/file (System/getProperty "java.io.tmpdir")
                          (str "kuni-umi-jurisdiction-" (System/nanoTime)))]
-        (.mkdirs dir)
+        (io/mkdirs dir)
         (doseq [[target ext] [["wasm32-browser" ".wasm"] ["js-browser" ".mjs"]]
                 :let [out (io/file dir (str "jurisdiction-" target ext))
                       result (shell/sh (kotoba-bin) "-M" "compile"
-                                       (.getAbsolutePath kotoba-file)
+                                       (io/absolute-path kotoba-file)
                                        "--target" target
-                                       "--output" (.getAbsolutePath out))]]
+                                       "--output" (io/absolute-path out))]]
           (is (zero? (:exit result))
               (str "-M compile --target " target "\n" (:err result) (:out result)))
-          (is (.isFile out) (str target " emitted nothing"))))
+          (is (io/file? out) (str target " emitted nothing"))))
       (println "SKIP kotoba-cli-compiles-the-guest:" (kotoba-bin)
                "is not the Kotoba compiler CLI — set KOTOBA to"
                "orgs/kotoba-lang/amu/bin/kotoba"))))
