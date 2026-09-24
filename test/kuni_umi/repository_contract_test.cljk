@@ -1,5 +1,5 @@
 (ns kuni-umi.repository-contract-test
-  (:require [clojure.edn :as edn]
+  (:require [kotoba.lang.edn :as edn]
             [cheshire.core :as json]
             [clojure.java.io :as io]
             [kotoba.test :refer [deftest is testing]]))
