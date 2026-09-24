@@ -16,7 +16,7 @@
   PROPOSAL only. `cell/jurisdiction-governor` independently re-derives the
   actual decision from the raw state and can never be talked past the
   constitutional intendedUse floor by any LLM output, however confident."
-  (:require #?(:clj  [clojure.edn :as edn]
+  (:require #?(:clj  [kotoba.lang.edn :as edn]
                :cljs [cljs.reader :as edn])
             [kotoba.lang.text :as str]
             [langchain.model :as model]))
