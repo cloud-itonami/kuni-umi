@@ -2,7 +2,7 @@
   "kuni-umi 国産み ConstructionOrchestrationCell smoke + invariant tests.
   Pins the witness-router branches, the cadence-≤10 build-graph invariant, the
   R0 substrate gates, and the event shims (mirrors site-survey test)."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.construction-orchestration.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities

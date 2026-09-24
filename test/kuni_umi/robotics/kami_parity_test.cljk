@@ -1,6 +1,6 @@
 (ns kuni-umi.robotics.kami-parity-test
   (:require [cheshire.core :as json]
-            [clojure.test :refer [deftest is]]
+            [kotoba.test :refer [deftest is]]
             [kuni-umi.robotics.kinematics :as k]))
 
 (def trace

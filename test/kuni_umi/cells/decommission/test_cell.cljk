@@ -1,7 +1,7 @@
 (ns kuni-umi.cells.decommission.test-cell
   "kuni-umi 国産み DecommissionCell smoke + invariant tests. Linear all-gated
   graph; pins enums, the R0 substrate gates, graph wiring, and event shims."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.decommission.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities

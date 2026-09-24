@@ -5,7 +5,7 @@
   flat py/agent.py module, not the cells — same as tatekata). These assertions
   pin the ported cell's pure surface + its R0 hardware/SDK gates + the
   constitutional N≥2 witness invariant (ADR-2605201400 §9)."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kuni-umi.cells.site-survey.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities

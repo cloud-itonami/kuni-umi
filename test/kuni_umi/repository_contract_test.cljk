@@ -2,7 +2,7 @@
   (:require [clojure.edn :as edn]
             [cheshire.core :as json]
             [clojure.java.io :as io]
-            [clojure.test :refer [deftest is testing]]))
+            [kotoba.test :refer [deftest is testing]]))
 
 (def contract (edn/read-string (slurp "repository-contracts.edn")))
 

@@ -1,7 +1,7 @@
 (ns kuni-umi.robotics.test-robotics
   "kuni-umi 国産み robotics physics layer — cljc conformance.
   The oracle values below are committed fixtures preserved from the port wave."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kuni-umi.robotics.plant :as plant]
             [kuni-umi.robotics.control :as control]
             [kuni-umi.robotics.safety :as safety]

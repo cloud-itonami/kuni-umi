@@ -5,7 +5,7 @@
   flat py/agent.py module, not the cells). These assertions pin the ported cell's
   pure surface (proportionality-check) + its R0 substrate gates + the graph
   wiring, mirroring the site-survey test."
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.deployment-planning.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
