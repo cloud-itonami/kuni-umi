@@ -1,16 +1,16 @@
 (ns kuni-umi.cells.commissioning.cell-test
-  (:require [kotoba.test :refer [deftest is testing]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is testing]]
             [kuni-umi.cells.commissioning.cell :as cell]))
 
 (deftest offline-open-ot-registration
   (is (= ["did:loop:one"]
          (get (cell/register-with-open-ot {"openOtLoopDids" ["did:loop:one"]} {})
               "openOtLoopDids")))
-  (is (thrown? clojure.lang.ExceptionInfo
+  (is (thrown? kerror/ExceptionInfo
                (cell/register-with-open-ot {} {:sdk :live}))))
 
 (deftest commissioning-remains-r0-gated
-  (is (thrown? clojure.lang.ExceptionInfo (cell/solve {})))
+  (is (thrown? kerror/ExceptionInfo (cell/solve {})))
   (is (= "CommissioningCell:did:plan:1"
          (cell/thread-id-from-event {"value" {"planDid" "did:plan:1"}} nil)))
   (is (= "CommissioningCell:fallback"

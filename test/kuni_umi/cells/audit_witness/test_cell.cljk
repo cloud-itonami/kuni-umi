@@ -2,7 +2,7 @@
   "kuni-umi 国産み AuditWitnessCell smoke + invariant tests. Pins the pure
   verify-signatures / compare-blobs logic, the N≥2 invariant, both routers, the
   R0 substrate gates, and the event shims."
-  (:require [kotoba.test :refer [deftest is]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.audit-witness.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
@@ -65,7 +65,7 @@
     (doseq [f [cell/poll-witnesses cell/attest-record
                cell/escalate-mismatch cell/feedback-phenotype]]
       (let [e (try (f cell/audit-witness-state deps) nil
-                   (catch clojure.lang.ExceptionInfo e e))]
+                   (catch kerror/ExceptionInfo e e))]
         (is (some? e))
         (is (true? (:kuni-umi/not-implemented (ex-data e))))))))
 

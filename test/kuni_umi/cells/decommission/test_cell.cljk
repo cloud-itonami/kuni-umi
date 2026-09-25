@@ -1,7 +1,7 @@
 (ns kuni-umi.cells.decommission.test-cell
   "kuni-umi 国産み DecommissionCell smoke + invariant tests. Linear all-gated
   graph; pins enums, the R0 substrate gates, graph wiring, and event shims."
-  (:require [kotoba.test :refer [deftest is]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.decommission.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
@@ -16,7 +16,7 @@
     (doseq [f [cell/decommission-plan cell/disconnect-from-utility cell/physical-teardown
                cell/land-return cell/release-stewardship cell/archive-site]]
       (let [e (try (f cell/decommission-state deps) nil
-                   (catch clojure.lang.ExceptionInfo e e))]
+                   (catch kerror/ExceptionInfo e e))]
         (is (some? e))
         (is (true? (:kuni-umi/not-implemented (ex-data e))))))))
 
@@ -26,7 +26,7 @@
     (is (nil? (:conditional-edges g)))   ;; linear, no router
     (is (some #{["START" "decommission_plan"]} (:edges g)))
     (is (some #{["archive_site" "END"]} (:edges g)))
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown? kerror/ExceptionInfo
                  ((get-in g [:steps "decommission_plan"]) cell/decommission-state)))))
 
 (deftest event-shims-match-python

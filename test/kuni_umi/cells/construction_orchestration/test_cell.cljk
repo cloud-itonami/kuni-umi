@@ -2,7 +2,7 @@
   "kuni-umi 国産み ConstructionOrchestrationCell smoke + invariant tests.
   Pins the witness-router branches, the cadence-≤10 build-graph invariant, the
   R0 substrate gates, and the event shims (mirrors site-survey test)."
-  (:require [kotoba.test :refer [deftest is]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.construction-orchestration.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
@@ -38,7 +38,7 @@
     (is (some #{["complete_handoff" "END"]} (:edges g))))
   ;; cadence > 10 → constitutional violation raises
   (let [e (try (cell/build-graph (cell/make-cell-deps :config {"cadence_hz_max" 60})) nil
-               (catch clojure.lang.ExceptionInfo e e))]
+               (catch kerror/ExceptionInfo e e))]
     (is (some? e))
     (is (true? (:kuni-umi/cadence-violation (ex-data e))))
     (is (= 60 (:cadence-hz-max (ex-data e))))))
@@ -48,7 +48,7 @@
     (doseq [f [cell/dispatch-fleet cell/super-step-loop cell/stream-progress
                cell/witness-verify cell/handler-anomaly cell/complete-handoff]]
       (let [e (try (f cell/construction-orchestration-state deps) nil
-                   (catch clojure.lang.ExceptionInfo e e))]
+                   (catch kerror/ExceptionInfo e e))]
         (is (some? e))
         (is (true? (:kuni-umi/not-implemented (ex-data e))))))))
 

@@ -5,7 +5,7 @@
   flat py/agent.py module, not the cells). These assertions pin the ported cell's
   pure surface (proportionality-check) + its R0 substrate gates + the graph
   wiring, mirroring the site-survey test."
-  (:require [kotoba.test :refer [deftest is]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is]]
             [kuni-umi.cells.deployment-planning.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
@@ -39,7 +39,7 @@
                cell/counterparty-classification cell/payment-plan
                cell/fleet-allocation cell/propose-plan]]
       (let [e (try (f cell/deployment-planning-state deps) nil
-                   (catch clojure.lang.ExceptionInfo e e))]
+                   (catch kerror/ExceptionInfo e e))]
         (is (some? e))
         (is (true? (:kuni-umi/not-implemented (ex-data e))))))))
 
@@ -54,7 +54,7 @@
     (is (true? (:requiresGovernance
                 ((get-in g [:steps "proportionality_check"])
                  (assoc cell/deployment-planning-state :populationImpacted 250)))))
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown? kerror/ExceptionInfo
                  ((get-in g [:steps "bom_generation"]) cell/deployment-planning-state)))))
 
 (deftest event-shims-match-python

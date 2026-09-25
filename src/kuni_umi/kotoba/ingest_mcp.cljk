@@ -4,7 +4,7 @@
   "kuni-umi 国生み — MCP seed-ingest scaffold (dry-run default, live path placeholder).
   ADR-2605201400. Template: see funadaiku.kotoba.ingest-mcp."
   (:require [kotoba.lang.text :as str]
-            #?(:clj [clojure.java.io :as io])))
+            #?(:clj [kotoba.io :as io])))
 
 (def default-url   "http://127.0.0.1:8077")
 (def default-graph "com.etzhayyim.kuniumi")
@@ -27,15 +27,15 @@
      ;; actually CONTAINS kotoba/seed.edn, rather than counting hops -- a count
      ;; encodes both the directory layout and the host's *file* convention, and
      ;; only one of those is this repo's to control.
-     (let [dirs (->> (.getParentFile (.getAbsoluteFile (io/file *file*)))
-                     (iterate #(some-> ^java.io.File % .getParentFile))
+     (let [dirs (->> (io/parent-file (io/absolute-file (io/file *file*)))
+                     (iterate #(some-> % io/parent-file))
                      (take-while some?)
                      (take 10))]
-       (or (some (fn [^java.io.File d]
+       (or (some (fn [d]
                    (let [f (io/file d "kotoba" "seed.edn")]
-                     (when (.isFile f) (.getPath f))))
+                     (when (io/file? f) (io/path f))))
                  dirs)
-           (.getPath (io/file "kotoba" "seed.edn"))))))
+           (io/path (io/file "kotoba" "seed.edn"))))))
 
 (defn strip-comments [^String s]
   (let [sb (StringBuilder.)]

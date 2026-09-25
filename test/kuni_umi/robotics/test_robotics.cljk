@@ -1,7 +1,7 @@
 (ns kuni-umi.robotics.test-robotics
   "kuni-umi 国産み robotics physics layer — cljc conformance.
   The oracle values below are committed fixtures preserved from the port wave."
-  (:require [kotoba.test :refer [deftest is testing]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is testing]]
             [kuni-umi.robotics.plant :as plant]
             [kuni-umi.robotics.control :as control]
             [kuni-umi.robotics.safety :as safety]
@@ -56,13 +56,13 @@
 
 (deftest safety-civilian-gate
   (is (nil? (safety/assert-civilian "install" ["install" "service"])))
-  (is (thrown? clojure.lang.ExceptionInfo (safety/assert-civilian "weapon" ["weapon"])))   ;; forbidden anchor wins
-  (is (thrown? clojure.lang.ExceptionInfo (safety/assert-civilian "mine" ["install"]))))   ;; not allowlisted
+  (is (thrown? kerror/ExceptionInfo (safety/assert-civilian "weapon" ["weapon"])))   ;; forbidden anchor wins
+  (is (thrown? kerror/ExceptionInfo (safety/assert-civilian "mine" ["install"]))))   ;; not allowlisted
 
 (deftest safety-no-server-key
   (is (nil? (safety/require-member-signature "member-sig")))
-  (is (thrown? clojure.lang.ExceptionInfo (safety/require-member-signature "m" "server-sig")))  ;; G15: platform never signs
-  (is (thrown? clojure.lang.ExceptionInfo (safety/require-member-signature ""))))               ;; nobody authorised
+  (is (thrown? kerror/ExceptionInfo (safety/require-member-signature "m" "server-sig")))  ;; G15: platform never signs
+  (is (thrown? kerror/ExceptionInfo (safety/require-member-signature ""))))               ;; nobody authorised
 
 (deftest safety-witness-quorum
   (is (false? (:ok (safety/witness-quorum-ok ["a"]))))
@@ -95,7 +95,7 @@
 
 (deftest commission-record-gates
   ;; member-sig required first (G15)
-  (is (thrown? clojure.lang.ExceptionInfo
+  (is (thrown? kerror/ExceptionInfo
                (comm/commission-microgrid-site {:site-did "s" :loop-dids [] :member-sig ""
                                                 :witness-sigs ["a" "b"]})))
   ;; passing acceptance + quorum → operational, python-twin tier, server-held-key false
