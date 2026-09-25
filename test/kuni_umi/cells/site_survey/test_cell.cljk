@@ -5,7 +5,7 @@
   flat py/agent.py module, not the cells — same as tatekata). These assertions
   pin the ported cell's pure surface + its R0 hardware/SDK gates + the
   constitutional N≥2 witness invariant (ADR-2605201400 §9)."
-  (:require [kotoba.test :refer [deftest is testing]]
+  (:require [kotoba.lang.error :as kerror] [kotoba.test :refer [deftest is testing]]
             [kuni-umi.cells.site-survey.cell :as cell]))
 
 (deftest closed-enums-preserve-python-value-identities
@@ -94,7 +94,7 @@
     (doseq [f [cell/allocate-scout-fleet cell/collect-sensor-blob
                cell/witness-attest cell/emit-survey]]
       (let [e (try (f cell/site-survey-state deps) nil
-                   (catch clojure.lang.ExceptionInfo e e))]
+                   (catch kerror/ExceptionInfo e e))]
         (is (some? e))
         (is (true? (:kuni-umi/not-implemented (ex-data e))))))))
 
@@ -107,7 +107,7 @@
     ;; the pure node is callable through the graph; the gated ones raise
     (is (true? (:accepted ((get-in g [:steps "jurisdiction_eligibility"])
                            eligible-site-state))))
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown? kerror/ExceptionInfo
                  ((get-in g [:steps "allocate_scout_fleet"]) cell/site-survey-state)))))
 
 (deftest event-shims-match-python
