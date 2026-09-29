@@ -1,7 +1,7 @@
 {"lexicon" 1,
  "id" "com.etzhayyim.kuniUmi.defineDeploymentSite",
  "description"
- "Candidate deployment site definition emitted by the kuni-umi SiteSurveyCell (phase 1, leaderNode naphtali). Establishes a parcel of land or installation site is being considered for kuni-umi planetary-infra robotics deployment. Per ADR-2605201400 + the phasing gate in `20-actors/kuni-umi/CLAUDE.md`: a site MUST be registered in LandRegistry / OceanStewardship before S1+ phase progression. Per ADR-2605192245 (Land Trust waqf-equivalent inalienability).",
+ "Candidate deployment site definition emitted by the kuni-umi SiteSurveyCell (phase 1, leaderNode naphtali). Establishes a parcel of land or installation site is being considered for kuni-umi planetary-infra robotics deployment. Per ADR-2605201400 + the phasing gate in `20-actors/kuni-umi/AGENTS.md`: a site MUST be registered in LandRegistry / OceanStewardship before S1+ phase progression. Per ADR-2605192245 (Land Trust waqf-equivalent inalienability).",
  "defs"
  {"main"
   {"type" "record",
@@ -39,7 +39,7 @@
        "religious-community-facility"
        "agricultural-cooperative"],
       "description"
-      "G5: Charter Rider §2 — military / proprietary closed-design uses are STRUCTURALLY excluded from this enum. Per `20-actors/kuni-umi/CLAUDE.md` boundary table."},
+      "G5: Charter Rider §2 — military / proprietary closed-design uses are STRUCTURALLY excluded from this enum. Per `20-actors/kuni-umi/AGENTS.md` boundary table."},
      "charterRiderComplianceAttested"
      {"type" "boolean", "const" true, "description" "Structural G5."},
      "siteAreaSqMm"
