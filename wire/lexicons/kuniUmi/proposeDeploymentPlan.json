@@ -41,7 +41,7 @@
               "ref": "#giemonUnitAssignment"
             },
             "minLength": 1,
-            "description": "Giemon Otete robot DIDs assigned to the deployment (per `20-actors/kuni-umi/CLAUDE.md` phasing gate: ≥1 unit with valid Ed25519 key required)."
+            "description": "Giemon Otete robot DIDs assigned to the deployment (per `20-actors/kuni-umi/AGENTS.md` phasing gate: ≥1 unit with valid Ed25519 key required)."
           },
           "estimatedDurationDays": {
             "type": "integer",
@@ -69,7 +69,7 @@
       "properties": {
         "robotDid": {
           "type": "string",
-          "description": "DID of the form `did:web:etzhayyim.com:kuniumi:robot:<serial>` per CLAUDE.md."
+          "description": "DID of the form `did:web:etzhayyim.com:kuniumi:robot:<serial>` per AGENTS.md."
         },
         "rolePhase": {
           "type": "string",

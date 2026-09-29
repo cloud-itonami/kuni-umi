@@ -1,7 +1,7 @@
 {"lexicon" 1,
  "id" "com.etzhayyim.kuniUmi.recordConstructionProgress",
  "description"
- "Construction progress checkpoint emitted by ConstructionOrchestrationCell (phase 3, leaderNode joseph) and processed by CommissioningCell (phase 4). **Witness invariant (constitutional, per `20-actors/kuni-umi/CLAUDE.md`)**: N ≥ 2 independent robot DID signatures REQUIRED. Records with N=1 are STRUCTURALLY rejected by this Lexicon schema (minLength 2); MstListener additionally enforces Council Lv6+ escalation on N=1 attempts. The robot DIDs MUST be distinct (no duplicate). Per ADR-2605201400 + ADR-2605192415.",
+ "Construction progress checkpoint emitted by ConstructionOrchestrationCell (phase 3, leaderNode joseph) and processed by CommissioningCell (phase 4). **Witness invariant (constitutional, per `20-actors/kuni-umi/AGENTS.md`)**: N ≥ 2 independent robot DID signatures REQUIRED. Records with N=1 are STRUCTURALLY rejected by this Lexicon schema (minLength 2); MstListener additionally enforces Council Lv6+ escalation on N=1 attempts. The robot DIDs MUST be distinct (no duplicate). Per ADR-2605201400 + ADR-2605192415.",
  "defs"
  {"main"
   {"type" "record",
@@ -24,7 +24,7 @@
       "items" {"type" "ref", "ref" "#robotWitnessSignature"},
       "minLength" 2,
       "description"
-      "**Constitutional witness invariant**: ≥2 independent robot DID signatures. Per CLAUDE.md: 'N=1 で MST に書き込もうとした場合 MstListener が即 reject + Council escalation Lv6+ 通知'. The robotDids in this array MUST be distinct."},
+      "**Constitutional witness invariant**: ≥2 independent robot DID signatures. Per AGENTS.md: 'N=1 で MST に書き込もうとした場合 MstListener が即 reject + Council escalation Lv6+ 通知'. The robotDids in this array MUST be distinct."},
      "createdAt" {"type" "string", "format" "datetime"},
      "constructionOrchestrationCellAttestationCid"
      {"type" "string", "format" "cid"},

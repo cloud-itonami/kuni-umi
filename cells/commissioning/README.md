@@ -30,4 +30,4 @@ After `commissionDeployment`, kuni-umi is observer-only for that site (except `A
 ## See also
 - Lexicon `00-contracts/lexicons/com/etzhayyim/apps/etzhayyim/kuniUmi/commissionDeployment.json`
 - `60-apps/etzhayyim-project-open-ot/PROTOTYPE-MICROGRID.md` (acceptance test reference)
-- All `60-apps/etzhayyim-project-open-{denki,gas,water,network,power,rail,airplane,ports}/CLAUDE.md`
+- All `60-apps/etzhayyim-project-open-{denki,gas,water,network,power,rail,airplane,ports}/AGENTS.md`

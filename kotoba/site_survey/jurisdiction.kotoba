@@ -40,7 +40,7 @@
   (:export [civilian-use? rejection-code accepted? route next-node
             advisor-confidence-floor]))
 
-;; ── The constitutional floor (this actor's CLAUDE.md intendedUse row) ──
+;; ── The constitutional floor (this actor's AGENTS.md intendedUse row) ──
 ;; Civilian / community / commons only. No advisor and no confidence level
 ;; reaches past this; it is checked first for exactly that reason.
 

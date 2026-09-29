@@ -160,7 +160,7 @@
                         "and live Giemon fleet.")))
 
 (def constitutional-intended-uses
-  "Hard invariant per this actor's own CLAUDE.md boundary table (`intendedUse`
+  "Hard invariant per this actor's own AGENTS.md boundary table (`intendedUse`
   row): civilian/community/commons only. military/proprietary-closed-design
   is NEVER eligible, independent of any advisor's judgment — this constant
   is the governor's protected floor, the yosoku/tashikame/kouhou/fleet
@@ -238,7 +238,7 @@
       {:accepted false
        :rejectionReason (str "intendedUse " (pr-str intended-use)
                              " is not in " constitutional-intended-uses
-                             " (constitutional boundary, this actor's CLAUDE.md)")}
+                             " (constitutional boundary, this actor's AGENTS.md)")}
 
       "jurisdiction-did-missing"
       {:accepted false :rejectionReason "jurisdictionDid missing"}

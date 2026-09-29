@@ -1,7 +1,7 @@
 {
   "lexicon": 1,
   "id": "com.etzhayyim.kuniUmi.recordPhysicalAuditEvent",
-  "description": "Physical site audit event emitted by AuditWitnessCell (phase 5, leaderNode levi). **Witness invariant**: N ≥ 2 independent robot DID signatures REQUIRED (constitutional, per CLAUDE.md). Audits are periodic post-deployment checks of the physical site against the originally-proposed plan + the recorded construction progress. Per ADR-2605201400 + ADR-2605192415.",
+  "description": "Physical site audit event emitted by AuditWitnessCell (phase 5, leaderNode levi). **Witness invariant**: N ≥ 2 independent robot DID signatures REQUIRED (constitutional, per AGENTS.md). Audits are periodic post-deployment checks of the physical site against the originally-proposed plan + the recorded construction progress. Per ADR-2605201400 + ADR-2605192415.",
   "defs": {
     "main": {
       "type": "record",
